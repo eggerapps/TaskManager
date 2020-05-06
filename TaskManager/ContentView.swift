@@ -9,12 +9,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        Text("Hello, Jakob!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
+	@State var taskGroups: [TaskGroup] = getSampleData()
+	
+	var body: some View {
+		List(taskGroups) { group in
+			VStack(alignment: .leading) {
+				Text(group.label).font(.title)
+				HStack<AnyView>(alignment: .top) {
+					let levels = group.levels
+					return AnyView(
+						ForEach(levels.indices) { i in
+							VStack() {
+								ForEach(levels[i]) { task in
+									Text(task.label)
+								}
+							}
+						}
+					)
+				}
+			}
+		}.frame(maxWidth: .infinity, maxHeight: .infinity)
+		
+	}
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

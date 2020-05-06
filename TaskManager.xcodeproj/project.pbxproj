@@ -13,6 +13,7 @@
 		36984E43246319B0003F955E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36984E42246319B0003F955E /* Preview Assets.xcassets */; };
 		36984E46246319B0003F955E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36984E44246319B0003F955E /* Main.storyboard */; };
 		36984E52246319B1003F955E /* TaskManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36984E51246319B1003F955E /* TaskManagerTests.swift */; };
+		36984E5D24632147003F955E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36984E5C24632147003F955E /* Models.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 		36984E4D246319B1003F955E /* TaskManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		36984E51246319B1003F955E /* TaskManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManagerTests.swift; sourceTree = "<group>"; };
 		36984E53246319B1003F955E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		36984E5C24632147003F955E /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				36984E47246319B0003F955E /* Info.plist */,
 				36984E48246319B0003F955E /* TaskManager.entitlements */,
 				36984E41246319B0003F955E /* Preview Content */,
+				36984E5C24632147003F955E /* Models.swift */,
 			);
 			path = TaskManager;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36984E5D24632147003F955E /* Models.swift in Sources */,
 				36984E3E246319AD003F955E /* ContentView.swift in Sources */,
 				36984E3C246319AD003F955E /* AppDelegate.swift in Sources */,
 			);
