@@ -10,7 +10,8 @@ import SwiftUI
 
 struct ContentView: View {
 	@State var taskGroups: [TaskGroup] = getSampleData()
-	
+	@State var selectedTaskId: Int? = nil
+
 	var body: some View {
 		List(taskGroups) { group in
 			VStack(alignment: .leading) {
@@ -22,7 +23,7 @@ struct ContentView: View {
 						ForEach(levels.indices) { i in
 							VStack(spacing: 10) {
 								ForEach(levels[i]) { task in
-									TaskView(task: task)
+									TaskView(task: task, selectedTaskId: self.$selectedTaskId)
 								}
 							}
 						}
@@ -37,16 +38,29 @@ struct ContentView: View {
 struct TaskView: View {
 	let task: Task
 	
+	@Binding var selectedTaskId: Int?
+	
 	var body: some View {
-		Text(task.label)
-			.padding()
-			.background(
-				task.taskruns.contains(where: {$0.exit_code == 0}) ? Color.green.opacity(0.2) :
-					task.taskruns.contains(where: {$0.exit_code == nil}) ? Color.blue.opacity(0.6):
-					!task.taskruns.isEmpty ? Color.yellow.opacity(0.2) :
-					task.should_schedule ? Color.blue.opacity(0.2) :
-					Color.gray.opacity(0.2))
-			.cornerRadius(5)
+		Button(action: {
+			self.selectedTaskId = self.task.id
+		}) {
+			ZStack() {
+				RoundedRectangle(cornerRadius: 8, style: .continuous)
+					.foregroundColor(task.taskruns.contains(where: {$0.exit_code == 0}) ? Color.green.opacity(0.2) :
+						task.taskruns.contains(where: {$0.exit_code == nil}) ? Color.blue.opacity(0.6):
+						!task.taskruns.isEmpty ? Color.yellow.opacity(0.2) :
+						task.should_schedule ? Color.blue.opacity(0.2) :
+						Color.gray.opacity(0.2))
+					.frame(maxWidth: .infinity, maxHeight: .infinity)
+				if selectedTaskId == task.id {
+					RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(lineWidth: 2).foregroundColor(Color.black.opacity(0.4)).padding(1)
+				}
+				Text(task.label).foregroundColor(.black).padding()
+			}
+		}
+		.buttonStyle(BorderlessButtonStyle())
+		.frame(idealWidth: 300)
+
 	}
 }
 
