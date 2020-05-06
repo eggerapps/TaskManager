@@ -45,6 +45,7 @@ struct Task: Codable, Identifiable {
 	let created: Date
 	let taskruns: [TaskRun]
 	let dependencies: [Int]
+	let should_schedule: Bool
 }
 
 struct TaskRun: Codable, Identifiable {
