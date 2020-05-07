@@ -19,13 +19,22 @@ NS_ASSUME_NONNULL_BEGIN
 	NSString *toolchainString;
 	NSString *agentIdentifier;
 	int agentID;
+	int currentTaskId;
+	NSString *currentTaskScript;
+	NSString *currentTaskUserInfoString;
+	NSTask *task;
+	NSPipe *task_stdout;
+	NSPipe *task_stderr;
+	dispatch_source_t stdout_src;
+	dispatch_source_t stderr_src;
 }
 
 @property BOOL isRunning;
 @property IBOutlet NSTextView *logTextView;
-@property NSString *currentTaskLabel;
+@property(nullable) NSString *currentTaskLabel;
 
 -(IBAction)start:(id)sender;
+-(IBAction)getNextTask:(id)sender;
 -(IBAction)stop:(id)sender;
 
 -(void)logLine:(NSString*)line;
