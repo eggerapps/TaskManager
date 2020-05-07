@@ -1,0 +1,12 @@
+--- fe-connect.c	2016-03-28 22:07:39.000000000 +0200
++++ fe-connect.c	2016-04-01 17:32:55.000000000 +0200
+@@ -839,7 +839,8 @@
+ 			&& strcmp(conn->sslmode, "prefer") != 0
+ 			&& strcmp(conn->sslmode, "require") != 0
+ 			&& strcmp(conn->sslmode, "verify-ca") != 0
+-			&& strcmp(conn->sslmode, "verify-full") != 0)
++			&& strcmp(conn->sslmode, "verify-full") != 0
++			&& strcmp(conn->sslmode, "verify-keychain") != 0)
+ 		{
+ 			conn->status = CONNECTION_BAD;
+ 			printfPQExpBuffer(&conn->errorMessage,

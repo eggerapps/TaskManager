@@ -1,0 +1,75 @@
+--- fe-secure-openssl.c	2017-11-07 01:46:52.000000000 +0100
++++ fe-secure-openssl.c	2018-01-22 22:17:04.000000000 +0100
+@@ -117,10 +117,12 @@
+ 
+ 	pq_init_ssl_lib = do_ssl;
+ 	pq_init_crypto_lib = do_crypto;
+ }
+ 
++int verify_context_with_keychain(X509_STORE_CTX *ctx,void *conn);
++
+ /*
+  *	Begin or continue negotiating a secure session.
+  */
+ PostgresPollingStatusType
+ pgtls_open_client(PGconn *conn)
+@@ -929,10 +931,13 @@
+ 						  err);
+ 		SSLerrfree(err);
+ 		return -1;
+ 	}
+ 
++	if (strcmp(conn->sslmode, "verify-keychain") == 0)
++		SSL_CTX_set_cert_verify_callback(SSL_context, verify_context_with_keychain, conn);
++
+ 	/* Disable old protocol versions */
+ 	SSL_CTX_set_options(SSL_context, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
+ 
+ 	/*
+ 	 * Disable OpenSSL's moving-write-buffer sanity check, because it causes
+@@ -1007,11 +1011,11 @@
+ 		/*
+ 		 * stat() failed; assume root file doesn't exist.  If sslmode is
+ 		 * verify-ca or verify-full, this is an error.  Otherwise, continue
+ 		 * without performing any server cert verification.
+ 		 */
+-		if (conn->sslmode[0] == 'v')	/* "verify-ca" or "verify-full" */
++		if (conn->sslmode[0] == 'v' && strcmp(conn->sslmode, "verify-keychain") != 0)	/* "verify-ca" or "verify-full" */
+ 		{
+ 			/*
+ 			 * The only way to reach here with an empty filename is if
+ 			 * pqGetHomeDirectory failed.  That's a sufficiently unusual case
+ 			 * that it seems worth having a specialized error message for it.
+@@ -1232,19 +1236,10 @@
+ 			printfPQExpBuffer(&conn->errorMessage,
+ 							  libpq_gettext("certificate present, but not private key file \"%s\"\n"),
+ 							  fnbuf);
+ 			return -1;
+ 		}
+-#ifndef WIN32
+-		if (!S_ISREG(buf.st_mode) || buf.st_mode & (S_IRWXG | S_IRWXO))
+-		{
+-			printfPQExpBuffer(&conn->errorMessage,
+-							  libpq_gettext("private key file \"%s\" has group or world access; permissions should be u=rw (0600) or less\n"),
+-							  fnbuf);
+-			return -1;
+-		}
+-#endif
+ 
+ 		if (SSL_use_PrivateKey_file(conn->ssl, fnbuf, SSL_FILETYPE_PEM) != 1)
+ 		{
+ 			char	   *err = SSLerrmessage(ERR_get_error());
+ 
+@@ -1271,11 +1266,11 @@
+ 
+ 	/*
+ 	 * If a root cert was loaded, also set our certificate verification
+ 	 * callback.
+ 	 */
+-	if (have_rootcert)
++	if (have_rootcert || strcmp(conn->sslmode, "verify-keychain") == 0)
+ 		SSL_set_verify(conn->ssl, SSL_VERIFY_PEER, verify_cb);
+ 
+ 	/*
+ 	 * If the OpenSSL version used supports it (from 1.0.0 on) and the user
+ 	 * requested it, disable SSL compression.

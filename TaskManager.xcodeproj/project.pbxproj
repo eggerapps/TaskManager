@@ -3,10 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		361203C22464144D006B5966 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 361203C12464144D006B5966 /* AppDelegate.m */; };
+		361203C42464144E006B5966 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 361203C32464144E006B5966 /* Assets.xcassets */; };
+		361203C72464144E006B5966 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 361203C52464144E006B5966 /* MainMenu.xib */; };
+		361203CA2464144E006B5966 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 361203C92464144E006B5966 /* main.m */; };
+		361203D52464144F006B5966 /* TaskRunnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 361203D42464144F006B5966 /* TaskRunnerTests.m */; };
+		361203E024641644006B5966 /* libpq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 361203DF24641644006B5966 /* libpq.a */; };
+		361203E224641646006B5966 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 361203E124641646006B5966 /* libssl.a */; };
+		361203E424641649006B5966 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 361203E324641649006B5966 /* libcrypto.a */; };
 		36984E3C246319AD003F955E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36984E3B246319AD003F955E /* AppDelegate.swift */; };
 		36984E3E246319AD003F955E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36984E3D246319AD003F955E /* ContentView.swift */; };
 		36984E40246319B0003F955E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36984E3F246319B0003F955E /* Assets.xcassets */; };
@@ -14,9 +22,17 @@
 		36984E46246319B0003F955E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36984E44246319B0003F955E /* Main.storyboard */; };
 		36984E52246319B1003F955E /* TaskManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36984E51246319B1003F955E /* TaskManagerTests.swift */; };
 		36984E5D24632147003F955E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36984E5C24632147003F955E /* Models.swift */; };
+		36B86F45246429E00017C159 /* TaskRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 36B86F44246429E00017C159 /* TaskRunner.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		361203D12464144F006B5966 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 36984E30246319AD003F955E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 361203BD2464144D006B5966;
+			remoteInfo = TaskRunner;
+		};
 		36984E4E246319B1003F955E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 36984E30246319AD003F955E /* Project object */;
@@ -27,6 +43,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		361203BE2464144D006B5966 /* TaskRunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskRunner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		361203C02464144D006B5966 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		361203C12464144D006B5966 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		361203C32464144E006B5966 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		361203C62464144E006B5966 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		361203C82464144E006B5966 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		361203C92464144E006B5966 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		361203CB2464144E006B5966 /* TaskRunner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TaskRunner.entitlements; sourceTree = "<group>"; };
+		361203D02464144F006B5966 /* TaskRunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskRunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		361203D42464144F006B5966 /* TaskRunnerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskRunnerTests.m; sourceTree = "<group>"; };
+		361203D62464144F006B5966 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		361203DD2464162A006B5966 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+		361203DF24641644006B5966 /* libpq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpq.a; path = src/libpq.a; sourceTree = "<group>"; };
+		361203E124641646006B5966 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = src/libssl.a; sourceTree = "<group>"; };
+		361203E324641649006B5966 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = src/libcrypto.a; sourceTree = "<group>"; };
 		36984E38246319AD003F955E /* TaskManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36984E3B246319AD003F955E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36984E3D246319AD003F955E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -39,9 +70,29 @@
 		36984E51246319B1003F955E /* TaskManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManagerTests.swift; sourceTree = "<group>"; };
 		36984E53246319B1003F955E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		36984E5C24632147003F955E /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		36B86F43246429E00017C159 /* TaskRunner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskRunner.h; sourceTree = "<group>"; };
+		36B86F44246429E00017C159 /* TaskRunner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskRunner.m; sourceTree = "<group>"; };
+		36B86F46246432D20017C159 /* libpq-fe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "libpq-fe.h"; path = "src/libpq-fe.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		361203BB2464144D006B5966 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				361203E224641646006B5966 /* libssl.a in Frameworks */,
+				361203E024641644006B5966 /* libpq.a in Frameworks */,
+				361203E424641649006B5966 /* libcrypto.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		361203CD2464144F006B5966 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		36984E35246319AD003F955E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -59,12 +110,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		361203BF2464144D006B5966 /* TaskRunner */ = {
+			isa = PBXGroup;
+			children = (
+				361203C02464144D006B5966 /* AppDelegate.h */,
+				361203C12464144D006B5966 /* AppDelegate.m */,
+				361203C32464144E006B5966 /* Assets.xcassets */,
+				361203C52464144E006B5966 /* MainMenu.xib */,
+				361203C82464144E006B5966 /* Info.plist */,
+				361203C92464144E006B5966 /* main.m */,
+				361203CB2464144E006B5966 /* TaskRunner.entitlements */,
+				36B86F43246429E00017C159 /* TaskRunner.h */,
+				36B86F44246429E00017C159 /* TaskRunner.m */,
+			);
+			path = TaskRunner;
+			sourceTree = "<group>";
+		};
+		361203D32464144F006B5966 /* TaskRunnerTests */ = {
+			isa = PBXGroup;
+			children = (
+				361203D42464144F006B5966 /* TaskRunnerTests.m */,
+				361203D62464144F006B5966 /* Info.plist */,
+			);
+			path = TaskRunnerTests;
+			sourceTree = "<group>";
+		};
+		361203DE24641644006B5966 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				361203DF24641644006B5966 /* libpq.a */,
+				361203E124641646006B5966 /* libssl.a */,
+				361203E324641649006B5966 /* libcrypto.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		36984E2F246319AD003F955E = {
 			isa = PBXGroup;
 			children = (
+				36B86F46246432D20017C159 /* libpq-fe.h */,
+				361203DD2464162A006B5966 /* src */,
 				36984E3A246319AD003F955E /* TaskManager */,
 				36984E50246319B1003F955E /* TaskManagerTests */,
+				361203BF2464144D006B5966 /* TaskRunner */,
+				361203D32464144F006B5966 /* TaskRunnerTests */,
 				36984E39246319AD003F955E /* Products */,
+				361203DE24641644006B5966 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +164,8 @@
 			children = (
 				36984E38246319AD003F955E /* TaskManager.app */,
 				36984E4D246319B1003F955E /* TaskManagerTests.xctest */,
+				361203BE2464144D006B5966 /* TaskRunner.app */,
+				361203D02464144F006B5966 /* TaskRunnerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,6 +205,41 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		361203BD2464144D006B5966 /* TaskRunner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 361203DB2464144F006B5966 /* Build configuration list for PBXNativeTarget "TaskRunner" */;
+			buildPhases = (
+				361203BA2464144D006B5966 /* Sources */,
+				361203BB2464144D006B5966 /* Frameworks */,
+				361203BC2464144D006B5966 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TaskRunner;
+			productName = TaskRunner;
+			productReference = 361203BE2464144D006B5966 /* TaskRunner.app */;
+			productType = "com.apple.product-type.application";
+		};
+		361203CF2464144F006B5966 /* TaskRunnerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 361203DC2464144F006B5966 /* Build configuration list for PBXNativeTarget "TaskRunnerTests" */;
+			buildPhases = (
+				361203CC2464144F006B5966 /* Sources */,
+				361203CD2464144F006B5966 /* Frameworks */,
+				361203CE2464144F006B5966 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				361203D22464144F006B5966 /* PBXTargetDependency */,
+			);
+			name = TaskRunnerTests;
+			productName = TaskRunnerTests;
+			productReference = 361203D02464144F006B5966 /* TaskRunnerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		36984E37246319AD003F955E /* TaskManager */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 36984E56246319B1003F955E /* Build configuration list for PBXNativeTarget "TaskManager" */;
@@ -157,17 +285,32 @@
 				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = eggerapps;
 				TargetAttributes = {
+					361203BD2464144D006B5966 = {
+						CreatedOnToolsVersion = 11.3.1;
+						DevelopmentTeam = ZF84SJ5A3G;
+						ProvisioningStyle = Automatic;
+					};
+					361203CF2464144F006B5966 = {
+						CreatedOnToolsVersion = 11.3.1;
+						DevelopmentTeam = ZF84SJ5A3G;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 361203BD2464144D006B5966;
+					};
 					36984E37246319AD003F955E = {
 						CreatedOnToolsVersion = 11.4.1;
+						DevelopmentTeam = ZF84SJ5A3G;
+						ProvisioningStyle = Automatic;
 					};
 					36984E4C246319B1003F955E = {
 						CreatedOnToolsVersion = 11.4.1;
+						DevelopmentTeam = ZF84SJ5A3G;
+						ProvisioningStyle = Automatic;
 						TestTargetID = 36984E37246319AD003F955E;
 					};
 				};
 			};
 			buildConfigurationList = 36984E33246319AD003F955E /* Build configuration list for PBXProject "TaskManager" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -181,11 +324,29 @@
 			targets = (
 				36984E37246319AD003F955E /* TaskManager */,
 				36984E4C246319B1003F955E /* TaskManagerTests */,
+				361203BD2464144D006B5966 /* TaskRunner */,
+				361203CF2464144F006B5966 /* TaskRunnerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		361203BC2464144D006B5966 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				361203C42464144E006B5966 /* Assets.xcassets in Resources */,
+				361203C72464144E006B5966 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		361203CE2464144F006B5966 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		36984E36246319AD003F955E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -206,6 +367,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		361203BA2464144D006B5966 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36B86F45246429E00017C159 /* TaskRunner.m in Sources */,
+				361203CA2464144E006B5966 /* main.m in Sources */,
+				361203C22464144D006B5966 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		361203CC2464144F006B5966 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				361203D52464144F006B5966 /* TaskRunnerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		36984E34246319AD003F955E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -227,6 +406,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		361203D22464144F006B5966 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 361203BD2464144D006B5966 /* TaskRunner */;
+			targetProxy = 361203D12464144F006B5966 /* PBXContainerItemProxy */;
+		};
 		36984E4F246319B1003F955E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 36984E37246319AD003F955E /* TaskManager */;
@@ -235,6 +419,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		361203C52464144E006B5966 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				361203C62464144E006B5966 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 		36984E44246319B0003F955E /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -246,6 +438,80 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		361203D72464144F006B5966 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TaskRunner/TaskRunner.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = ZF84SJ5A3G;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = TaskRunner/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/src",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskRunner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		361203D82464144F006B5966 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TaskRunner/TaskRunner.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = ZF84SJ5A3G;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = TaskRunner/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/src",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskRunner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		361203D92464144F006B5966 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = ZF84SJ5A3G;
+				INFOPLIST_FILE = TaskRunnerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskRunnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TaskRunner.app/Contents/MacOS/TaskRunner";
+			};
+			name = Debug;
+		};
+		361203DA2464144F006B5966 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = ZF84SJ5A3G;
+				INFOPLIST_FILE = TaskRunnerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskRunnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TaskRunner.app/Contents/MacOS/TaskRunner";
+			};
+			name = Release;
+		};
 		36984E54246319B1003F955E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -354,8 +620,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -371,10 +636,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TaskManager/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -394,10 +656,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TaskManager/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -414,11 +673,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = ZF84SJ5A3G;
 				INFOPLIST_FILE = TaskManagerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskManagerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -436,11 +691,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = ZF84SJ5A3G;
 				INFOPLIST_FILE = TaskManagerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskManagerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -452,6 +703,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		361203DB2464144F006B5966 /* Build configuration list for PBXNativeTarget "TaskRunner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				361203D72464144F006B5966 /* Debug */,
+				361203D82464144F006B5966 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		361203DC2464144F006B5966 /* Build configuration list for PBXNativeTarget "TaskRunnerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				361203D92464144F006B5966 /* Debug */,
+				361203DA2464144F006B5966 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		36984E33246319AD003F955E /* Build configuration list for PBXProject "TaskManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
