@@ -301,7 +301,3 @@
 }
 
 @end
-
-int verify_context_with_keychain() {
-	return NO;
-}
