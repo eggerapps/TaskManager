@@ -6,9 +6,6 @@ POSTGRES_VERSION=10.12
 
 PREFIX=$(CURDIR)/install
 
-SDK_ROOT=/Applications/Xcode/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-PKG_CONFIG_PATH=${SDK_ROOT}/usr/lib/pkgconfig 
-
 # compiler options
 MACOSX_DEPLOYMENT_TARGET=10.7
 CFLAGS:=$(CFLAGS) -mmacosx-version-min=10.7 -g
@@ -75,8 +72,6 @@ postgresql-$(POSTGRES_VERSION)/GNUmakefile: $(PREFIX)/lib/libssl.a postgresql-$(
 
 postgresql-$(POSTGRES_VERSION)/configure: postgresql-$(POSTGRES_VERSION).tar.bz2
 	$(TAR) "postgresql-$(POSTGRES_VERSION).tar.bz2"
-	patch -b postgresql-$(POSTGRES_VERSION)/src/interfaces/libpq/fe-secure-openssl.c patches/fe-secure-openssl.c.patch
-	patch -b postgresql-$(POSTGRES_VERSION)/src/interfaces/libpq/fe-connect.c patches/fe-connect.c.patch
 	touch $@
 
 postgresql-$(POSTGRES_VERSION).tar.bz2:	

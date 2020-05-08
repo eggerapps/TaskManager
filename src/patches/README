@@ -1,6 +1,0 @@
-Patches were made with the following commands:
-
-diff -u postgresql-9.5.2/src/interfaces/libpq/fe-connect.c postgresql-9.5.2-edited/src/interfaces/libpq/fe-connect.c >fe-connect.c.patch
-diff -U 5 postgresql-9.5.5/src/interfaces/libpq/fe-secure-openssl.c.orig postgresql-9.5.5/src/interfaces/libpq/fe-secure-openssl.c >patches/fe-secure-openssl.c.patch
-
-Then they were manually edited to remove the directories.
