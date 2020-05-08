@@ -103,15 +103,20 @@
 	
 	if (PQntuples(result)==0) {
 		[self logLine:@"No tasks available"];
+		PQclear(result);
+		return;
 	}
 	
-	int id_num = PQfnumber(result, "current_taskrun_id");
+	int id_num = PQfnumber(result, "taskrun_id");
 	int label_num = PQfnumber(result, "label");
 	int script_num = PQfnumber(result, "script");
 	int userinfo_num = PQfnumber(result, "userinfo");
 	
 	if (id_num == -1 || label_num == -1 || script_num == -1 || userinfo_num == -1) {
-		[self logLine:@"Result does not have expected columns."];
+		[self logLine:@"Result does not have expected columns. Got:"];
+		for (int i = 0; i<PQnfields(result); i++) {
+			[self logLine:@(PQfname(result, i))];
+		}
 		PQclear(result);
 		return;
 	}
@@ -154,30 +159,60 @@
 	
 	task = [[NSTask alloc] init];
 	task.currentDirectoryPath = taskWorkdir.path;
-	task.launchPath = @"/bin/sh";
-	task.arguments = @[@"-c", @"script"];
+	task.launchPath = @"/bin/bash";
+	task.arguments = @[@"-c", @"./script"];
 	task_stdout = [[NSPipe alloc] init];
 	task_stderr = [[NSPipe alloc] init];
-	task.standardOutput = task_stderr;
+	task.standardOutput = task_stdout;
 	task.standardError = task_stderr;
 
+	__block int num_done = 0;
+	__weak TaskRunner *weakSelf = self;
 	task_stdout.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fileHandleForReading) {
-		NSData *data = fileHandleForReading.availableData;
-		if (data.length == 0) {
-			[self completeTaskExitCode:task.terminationStatus];
-		}
-		[self logLine:[NSString stringWithFormat:@"%s", data.bytes] fd:1];
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			TaskRunner *strongSelf = weakSelf;
+			if (strongSelf) {
+				NSData *data = fileHandleForReading.availableData;
+				if (data.length == 0) {
+					fileHandleForReading.readabilityHandler = nil;
+					num_done++;
+					if (num_done==2) {
+						[strongSelf->task waitUntilExit];
+						[strongSelf completeTaskExitCode:strongSelf->task.terminationStatus];
+					}
+				} else {
+					NSString *string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
+					if (!string) string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSISOLatin1StringEncoding];
+					if (!string) string = @"����";
+					[strongSelf logLine:string fd:1];
+				}
+			}
+		});
 	};
 
 	task_stderr.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fileHandleForReading) {
-		NSData *data = fileHandleForReading.availableData;
-		if (data.length == 0) {
-			[self completeTaskExitCode:task.terminationStatus];
-		} else {
-			[self logLine:[NSString stringWithFormat:@"%s", data.bytes] fd:2];
-		}
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			TaskRunner *strongSelf = weakSelf;
+			if (strongSelf) {
+				NSData *data = fileHandleForReading.availableData;
+				if (data.length == 0) {
+					fileHandleForReading.readabilityHandler = nil;
+					num_done++;
+					if (num_done==2) {
+						[strongSelf->task waitUntilExit];
+						[strongSelf completeTaskExitCode:strongSelf->task.terminationStatus];
+					}
+				} else {
+					NSString *string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
+					if (!string) string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSISOLatin1StringEncoding];
+					if (!string) string = @"����";
+					[strongSelf logLine:string fd:2];
+				}
+			}
+		});
 	};
-
+	
+	[task launch];
 }
 
 -(void)completeTaskExitCode:(int)exitCode {
@@ -189,7 +224,7 @@
 		PGresult *result = PQexecParams(
 										conn,
 										"CALL agent_finish($1, $2)",
-										3,
+										2,
 										NULL,
 										values,
 										NULL,
