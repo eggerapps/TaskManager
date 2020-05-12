@@ -166,53 +166,52 @@
 	task.standardOutput = task_stdout;
 	task.standardError = task_stderr;
 
-	__block int num_done = 0;
 	__weak TaskRunner *weakSelf = self;
 	task_stdout.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fileHandleForReading) {
 		dispatch_sync(dispatch_get_main_queue(), ^{
-			TaskRunner *strongSelf = weakSelf;
-			if (strongSelf) {
-				NSData *data = fileHandleForReading.availableData;
-				if (data.length == 0) {
-					fileHandleForReading.readabilityHandler = nil;
-					num_done++;
-					if (num_done==2) {
-						[strongSelf->task waitUntilExit];
-						[strongSelf completeTaskExitCode:strongSelf->task.terminationStatus];
-					}
-				} else {
-					NSString *string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
-					if (!string) string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSISOLatin1StringEncoding];
-					if (!string) string = @"����";
-					[strongSelf logLine:string fd:1];
-				}
-			}
+			[weakSelf readFromFileHandle:fileHandleForReading fd:1];
 		});
 	};
 
 	task_stderr.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fileHandleForReading) {
 		dispatch_sync(dispatch_get_main_queue(), ^{
+			[weakSelf readFromFileHandle:fileHandleForReading fd:2];
+		});
+	};
+	
+	task.terminationHandler = ^(NSTask *completedTask){
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			// remove readaility handlers
+			// this should not be necessary, but there is a bug on macos 10.12 where nstask uses lots of CPU when the task is completed and ever makes the final call to the readability handler
+			if ([completedTask.standardOutput isKindOfClass:[NSPipe class]]) {
+				NSPipe *pipe = completedTask.standardOutput;
+				pipe.fileHandleForReading.readabilityHandler = nil;
+			}
+			if ([completedTask.standardError isKindOfClass:[NSPipe class]]) {
+				NSPipe *pipe = completedTask.standardError;
+				pipe.fileHandleForReading.readabilityHandler = nil;
+			}
+			// read remaining data (if any), then report task completion
 			TaskRunner *strongSelf = weakSelf;
-			if (strongSelf) {
-				NSData *data = fileHandleForReading.availableData;
-				if (data.length == 0) {
-					fileHandleForReading.readabilityHandler = nil;
-					num_done++;
-					if (num_done==2) {
-						[strongSelf->task waitUntilExit];
-						[strongSelf completeTaskExitCode:strongSelf->task.terminationStatus];
-					}
-				} else {
-					NSString *string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
-					if (!string) string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSISOLatin1StringEncoding];
-					if (!string) string = @"����";
-					[strongSelf logLine:string fd:2];
-				}
+			if (strongSelf && strongSelf->task == completedTask) {
+				[strongSelf readFromFileHandle:strongSelf->task_stdout.fileHandleForReading fd:1];
+				[strongSelf readFromFileHandle:strongSelf->task_stderr.fileHandleForReading fd:2];
+				[strongSelf completeTaskExitCode:completedTask.terminationStatus];
 			}
 		});
 	};
 	
 	[task launch];
+}
+
+-(void)readFromFileHandle:(NSFileHandle * _Nonnull)fileHandleForReading fd:(int)fd {
+	NSData *data = fileHandleForReading.availableData;
+	if (data.length) {
+		NSString *string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
+		if (!string) string = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSISOLatin1StringEncoding];
+		if (!string) string = @"����";
+		[self logLine:string fd:fd];
+	}
 }
 
 -(void)completeTaskExitCode:(int)exitCode {
