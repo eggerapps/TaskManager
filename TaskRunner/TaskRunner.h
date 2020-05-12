@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
-#import "libpq-fe.h"
+#import "PGConnection.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TaskRunner : NSObject {
-	PGconn *conn;
+	PGConnection *connection;
 	NSURL *workdir;
 	NSArray<NSString*> *toolchains;
 	NSString *toolchainString;

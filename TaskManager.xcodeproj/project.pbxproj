@@ -22,6 +22,12 @@
 		36984E46246319B0003F955E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36984E44246319B0003F955E /* Main.storyboard */; };
 		36984E52246319B1003F955E /* TaskManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36984E51246319B1003F955E /* TaskManagerTests.swift */; };
 		36984E5D24632147003F955E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36984E5C24632147003F955E /* Models.swift */; };
+		369C6341246AE623000D73C4 /* PGConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 369C6340246AE623000D73C4 /* PGConnection.m */; };
+		369C6342246AE633000D73C4 /* PGConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 369C6340246AE623000D73C4 /* PGConnection.m */; };
+		369C6345246AE753000D73C4 /* NSError+ConvenienceConstructors.m in Sources */ = {isa = PBXBuildFile; fileRef = 369C6344246AE753000D73C4 /* NSError+ConvenienceConstructors.m */; };
+		369C6346246AE753000D73C4 /* NSError+ConvenienceConstructors.m in Sources */ = {isa = PBXBuildFile; fileRef = 369C6344246AE753000D73C4 /* NSError+ConvenienceConstructors.m */; };
+		369C634A246AF278000D73C4 /* PGResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 369C6349246AF278000D73C4 /* PGResult.m */; };
+		369C634B246AF278000D73C4 /* PGResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 369C6349246AF278000D73C4 /* PGResult.m */; };
 		36B86F45246429E00017C159 /* TaskRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 36B86F44246429E00017C159 /* TaskRunner.m */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +76,13 @@
 		36984E51246319B1003F955E /* TaskManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManagerTests.swift; sourceTree = "<group>"; };
 		36984E53246319B1003F955E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		36984E5C24632147003F955E /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		369C633E246AE623000D73C4 /* TaskManager-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TaskManager-Bridging-Header.h"; sourceTree = "<group>"; };
+		369C633F246AE623000D73C4 /* PGConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PGConnection.h; sourceTree = "<group>"; };
+		369C6340246AE623000D73C4 /* PGConnection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PGConnection.m; sourceTree = "<group>"; };
+		369C6343246AE753000D73C4 /* NSError+ConvenienceConstructors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+ConvenienceConstructors.h"; sourceTree = "<group>"; };
+		369C6344246AE753000D73C4 /* NSError+ConvenienceConstructors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+ConvenienceConstructors.m"; sourceTree = "<group>"; };
+		369C6348246AF278000D73C4 /* PGResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PGResult.h; sourceTree = "<group>"; };
+		369C6349246AF278000D73C4 /* PGResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PGResult.m; sourceTree = "<group>"; };
 		36B86F43246429E00017C159 /* TaskRunner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskRunner.h; sourceTree = "<group>"; };
 		36B86F44246429E00017C159 /* TaskRunner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskRunner.m; sourceTree = "<group>"; };
 		36B86F46246432D20017C159 /* libpq-fe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "libpq-fe.h"; path = "src/libpq-fe.h"; sourceTree = "<group>"; };
@@ -150,6 +163,8 @@
 			children = (
 				36B86F46246432D20017C159 /* libpq-fe.h */,
 				361203DD2464162A006B5966 /* src */,
+				369C6347246AE762000D73C4 /* Helpers */,
+				369C633D246AE5F8000D73C4 /* PGConnection */,
 				36984E3A246319AD003F955E /* TaskManager */,
 				36984E50246319B1003F955E /* TaskManagerTests */,
 				361203BF2464144D006B5966 /* TaskRunner */,
@@ -173,6 +188,7 @@
 		36984E3A246319AD003F955E /* TaskManager */ = {
 			isa = PBXGroup;
 			children = (
+				369C633E246AE623000D73C4 /* TaskManager-Bridging-Header.h */,
 				36984E3B246319AD003F955E /* AppDelegate.swift */,
 				36984E3D246319AD003F955E /* ContentView.swift */,
 				36984E3F246319B0003F955E /* Assets.xcassets */,
@@ -200,6 +216,26 @@
 				36984E53246319B1003F955E /* Info.plist */,
 			);
 			path = TaskManagerTests;
+			sourceTree = "<group>";
+		};
+		369C633D246AE5F8000D73C4 /* PGConnection */ = {
+			isa = PBXGroup;
+			children = (
+				369C633F246AE623000D73C4 /* PGConnection.h */,
+				369C6340246AE623000D73C4 /* PGConnection.m */,
+				369C6348246AF278000D73C4 /* PGResult.h */,
+				369C6349246AF278000D73C4 /* PGResult.m */,
+			);
+			path = PGConnection;
+			sourceTree = "<group>";
+		};
+		369C6347246AE762000D73C4 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				369C6343246AE753000D73C4 /* NSError+ConvenienceConstructors.h */,
+				369C6344246AE753000D73C4 /* NSError+ConvenienceConstructors.m */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,6 +335,7 @@
 					36984E37246319AD003F955E = {
 						CreatedOnToolsVersion = 11.4.1;
 						DevelopmentTeam = ZF84SJ5A3G;
+						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 					};
 					36984E4C246319B1003F955E = {
@@ -371,9 +408,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				369C6346246AE753000D73C4 /* NSError+ConvenienceConstructors.m in Sources */,
+				369C6342246AE633000D73C4 /* PGConnection.m in Sources */,
 				36B86F45246429E00017C159 /* TaskRunner.m in Sources */,
 				361203CA2464144E006B5966 /* main.m in Sources */,
 				361203C22464144D006B5966 /* AppDelegate.m in Sources */,
+				369C634B246AF278000D73C4 /* PGResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,9 +429,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				369C6345246AE753000D73C4 /* NSError+ConvenienceConstructors.m in Sources */,
+				369C6341246AE623000D73C4 /* PGConnection.m in Sources */,
 				36984E5D24632147003F955E /* Models.swift in Sources */,
 				36984E3E246319AD003F955E /* ContentView.swift in Sources */,
 				36984E3C246319AD003F955E /* AppDelegate.swift in Sources */,
+				369C634A246AF278000D73C4 /* PGResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +671,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TaskManager/TaskManager.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -640,6 +684,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PGConnection/TaskManager-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -648,6 +694,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TaskManager/TaskManager.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -660,6 +707,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = at.eggerapps.TaskManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PGConnection/TaskManager-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

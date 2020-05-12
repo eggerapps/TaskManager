@@ -7,7 +7,6 @@
 //
 
 #import "TaskRunner.h"
-#import "libpq-fe.h"
 
 @implementation TaskRunner
 
@@ -53,39 +52,26 @@
 		return;
 	}
 
-	conn = PQconnectdb([[NSUserDefaults standardUserDefaults] stringForKey:@"ServerURL"].UTF8String);
-	if (PQstatus(conn) != CONNECTION_OK) {
-		[self presentMessage:@"Connection Failed" informativeText:@(PQerrorMessage(conn))];
-		PQfinish(conn);
-		conn = NULL;
+	connection = [PGConnection connectionToDatabase:[[NSUserDefaults standardUserDefaults] stringForKey:@"ServerURL"] error:&error];
+	if (!connection) {
+		[self presentError:error];
 		self.isRunning = NO;
 		return;
 	}
-	const char *values[2];
-	values[0] = [agentIdentifier UTF8String];
-	values[1] = [toolchainString UTF8String];
-	PGresult *result = PQexecParams(
-									conn,
-									"SELECT agent_init($1, $2)",
-									2,
-									NULL,
-									values,
-									NULL,
-									NULL,
-									0
-									);
-	if (PQresultStatus(result) != PGRES_TUPLES_OK) {
-		[self presentMessage:@"agent_init() failed" informativeText:@(PQerrorMessage(conn))];
-		PQfinish(conn);
-		conn = NULL;
+
+	PGResult *result = [connection executeQuery: @"SELECT agent_init($1, $2)"
+									 withParams: @[agentIdentifier, toolchainString]
+										  error: &error];
+	if (!result) {
+		[connection disconnect];
+		connection = nil;
+		[self presentError:error];
 		self.isRunning = NO;
 		return;
 	}
-	
-	agentID = [@(PQgetvalue(result,0,0)) intValue];
+
+	agentID = [[result stringAtRow:0 column:0] intValue];
 	[self logLine:[NSString stringWithFormat:@"Connected as agent ID %d", agentID]];
-	
-	PQclear(result);
 }
 
 -(IBAction)getNextTask:(id)sender {
@@ -94,39 +80,24 @@
 		return;
 	}
 	
-	PGresult *result = PQexec(conn, "SELECT * FROM agent_get_next_task()");
-	if (PQresultStatus(result) != PGRES_TUPLES_OK) {
-		[self presentMessage:@"agent_get_next_task() failed" informativeText:@(PQerrorMessage(conn))];
-		PQclear(result);
+	NSError *error = nil;
+	PGResult *result = [connection executeQuery: @"SELECT * FROM agent_get_next_task()"
+									 withParams: nil 
+										  error: &error];
+	if (!result) {
+		[self presentError:error];
 		return;
 	}
 	
-	if (PQntuples(result)==0) {
+	if (result.numRows == 0) {
 		[self logLine:@"No tasks available"];
-		PQclear(result);
 		return;
 	}
-	
-	int id_num = PQfnumber(result, "taskrun_id");
-	int label_num = PQfnumber(result, "label");
-	int script_num = PQfnumber(result, "script");
-	int userinfo_num = PQfnumber(result, "userinfo");
-	
-	if (id_num == -1 || label_num == -1 || script_num == -1 || userinfo_num == -1) {
-		[self logLine:@"Result does not have expected columns. Got:"];
-		for (int i = 0; i<PQnfields(result); i++) {
-			[self logLine:@(PQfname(result, i))];
-		}
-		PQclear(result);
-		return;
-	}
-	
-	currentTaskId = [@(PQgetvalue(result,0,id_num)) intValue];
-	self.currentTaskLabel = @(PQgetvalue(result,0,label_num));
-	currentTaskScript = @(PQgetvalue(result,0,script_num));
-	currentTaskUserInfoString = @(PQgetvalue(result,0,userinfo_num));
-
-	PQclear(result);
+		
+	currentTaskId = [[result stringAtRow:0 columnName:@"taskrun_id"] intValue];
+	self.currentTaskLabel = [result stringAtRow:0 columnName:@"label"];
+	currentTaskScript = [result stringAtRow:0 columnName:@"script"];
+	currentTaskUserInfoString = [result stringAtRow:0 columnName:@"userinfo"];
 
 	if (!currentTaskId) {
 		[self logLine:@"Taskrun does not have a valid ID."];
@@ -137,7 +108,6 @@
 
 	// create workdir for task
 	NSURL *taskWorkdir = [workdir URLByAppendingPathComponent:[NSString stringWithFormat:@"task_%09d", currentTaskId] isDirectory:YES];
-	NSError *error = nil;
 	if (![[NSFileManager defaultManager] createDirectoryAtURL:taskWorkdir withIntermediateDirectories:YES attributes:nil error:&error]) {
 		[self logLine:[NSString stringWithFormat:@"Could not create work dir: %@", error]];
 		[self completeTaskExitCode:-50000];
@@ -215,27 +185,16 @@
 }
 
 -(void)completeTaskExitCode:(int)exitCode {
-	// send output to server
-	if (currentTaskId && conn) {
-		const char *values[2];
-		values[0] = [[NSString stringWithFormat:@"%d", currentTaskId] UTF8String];
-		values[1] = [[NSString stringWithFormat:@"%d", exitCode] UTF8String];
-		PGresult *result = PQexecParams(
-										conn,
-										"CALL agent_finish($1, $2)",
-										2,
-										NULL,
-										values,
-										NULL,
-										NULL,
-										0
-										);
-		if (PQresultStatus(result) != PGRES_COMMAND_OK) {
-			[self logLocally:[NSString stringWithFormat:@"Failed to call agent_finish(): %s", PQerrorMessage(conn)]];
-		}
-		PQclear(result);
-	}
 	[self logLocally:[NSString stringWithFormat:@"Task finished with exit code %d", exitCode]];
+	// send output to server
+	if (currentTaskId && connection) {
+		NSError *error = nil;
+		if (![connection executeCommand: @"CALL agent_finish($1, $2)"
+							 withParams: @[@(currentTaskId), @(exitCode)]
+								  error: &error]) {
+			[self logLocally:[NSString stringWithFormat:@"Failed to call agent_finish(): %@", error]];
+		}
+	}
 	[task terminate];
 	task = nil;
 	currentTaskId = 0;
@@ -244,11 +203,13 @@
 }
 
 -(IBAction)stop:(id)sender {
-	PQfinish(conn);
-	conn = NULL;
+	if (task) {
+		[task terminate];
+		[self logLine:@"Aborting…" fd:3];
+		[self completeTaskExitCode:-55555];
+	}
+	connection = nil;
 	self.isRunning = NO;
-	[task terminate];
-	[self logLine:@"Stopping…"];
 }
 
 -(void)logLine:(NSString*)line {
@@ -260,25 +221,13 @@
 	[self logLocally:line];
 	
 	// send output to server
-	if (currentTaskId && conn) {
-		const char *values[3];
-		values[0] = [[NSString stringWithFormat:@"%d", currentTaskId] UTF8String];
-		values[1] = [[NSString stringWithFormat:@"%d", fd] UTF8String];
-		values[2] = [line UTF8String];
-		PGresult *result = PQexecParams(
-										conn,
-										"CALL agent_log($1, $2, $3)",
-										3,
-										NULL,
-										values,
-										NULL,
-										NULL,
-										0
-										);
-		if (PQresultStatus(result) != PGRES_COMMAND_OK) {
-			[self logLocally:[NSString stringWithFormat:@"Failed to send output to server: %s", PQerrorMessage(conn)]];
+	if (currentTaskId && connection) {
+		NSError *error = nil;
+		if (![connection executeCommand: @"CALL agent_log($1, $2, $3)" 
+							 withParams: @[@(currentTaskId), @(fd), line]
+								  error: &error]) {
+			[self logLocally:[NSString stringWithFormat:@"Failed to send output to server: %@", error]];
 		}
-		PQclear(result);
 	}
 }
 
@@ -297,6 +246,10 @@
 	alert.messageText = messageText;
 	alert.informativeText = informativeText;
 	[alert beginSheetModalForWindow:_logTextView.window completionHandler:nil];
+}
+
+-(void)presentError:(NSError*)error {
+	[NSApp presentError:error modalForWindow:_logTextView.window delegate:nil didPresentSelector:nil contextInfo:nil];
 }
 
 @end
