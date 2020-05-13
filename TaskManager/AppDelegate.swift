@@ -14,10 +14,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	var window: NSWindow!
 
-
+	var server = TaskManagerServer()
+	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Create the SwiftUI view that provides the window contents.
-		let contentView = ContentView()
+		let contentView = ContentView(server: server)
 
 		// Create the window and set the content view. 
 		window = NSWindow(

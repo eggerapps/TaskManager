@@ -9,29 +9,43 @@
 import SwiftUI
 
 struct ContentView: View {
-	@State var taskGroups: [TaskGroup] = getSampleData()
+	@ObservedObject var server: TaskManagerServer
 	@State var selectedTaskId: Int? = nil
 
 	var body: some View {
-		List(taskGroups) { group in
-			VStack(alignment: .leading) {
-				Text(group.label).font(.title)
-				Spacer()
-				HStack<AnyView>(alignment: .top) {
-					let levels = group.levels
-					return AnyView(
-						ForEach(levels.indices) { i in
-							VStack(spacing: 10) {
-								ForEach(levels[i]) { task in
-									TaskView(task: task, selectedTaskId: self.$selectedTaskId)
+		VStack {
+			HStack {
+				TextField("Server URL", text: $server.serverURL)
+				Button("Refresh") { 
+					do {
+						try self.server.refresh()
+					}
+					catch let error {
+						NSApp.presentError(error)
+					}
+				}
+			}.padding()
+			List(server.taskGroups) { group in
+				VStack(alignment: .leading) {
+					Text(group.label).font(.title)
+					Spacer()
+					HStack<AnyView>(alignment: .top) {
+						let levels = group.levels
+						return AnyView(
+							ForEach(levels.indices, id: \.self) { i in
+								VStack(spacing: 10) {
+									ForEach(levels[i]) { task in
+										TaskView(task: task, selectedTaskId: self.$selectedTaskId)
+									}
 								}
 							}
-						}
-					)
+						)
+					}
 				}
 			}
-		}.frame(maxWidth: .infinity, maxHeight: .infinity)
-		
+			
+		}
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
 }
 
@@ -66,6 +80,8 @@ struct TaskView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+		let tm = TaskManagerServer()
+		tm.taskGroups = getSampleData()
+		return ContentView(server: tm)
     }
 }
